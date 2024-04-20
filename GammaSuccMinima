@@ -16,8 +16,9 @@ Ortho1:=function(a,b,c)
 end function;
 
 Ortho2:=function(a,b,c)
-  M:=Matrix(R,6,6,[a,b,c,0,0,0, 0,a,0,b,c,0, 0,0,a,0,b,c, 0,0,0,0,0,0, 0,0,0,0,0,0, 0,0,0,0,0,0]);
-  B:=Basis(NullSpace(M));
+  U:=sub<V|[a,b,c,0,0,0], [0,a,0,b,c,0], [0,0,a,0,b,c]>;
+  W:=OrthogonalComplement(V,U);
+  B:=Basis(W);
   v_1:=B[1];
   v_2:=B[2];
   v_3:=B[3];
