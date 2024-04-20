@@ -1,0 +1,28 @@
+R:=RealField();
+V:=VectorSpace(R,6);
+Gram:=function(v_1,v_2,v_3)
+  u_1:=v_1;
+  u_2:=v_2-(DotProduct(u_1,v_2)/DotProduct(u_1,u_1))*u_1;
+  u_3:=v_3-(DotProduct(u_1,v_3)/DotProduct(u_1,u_1))*u_1-(DotProduct(u_2,v_3)/DotProduct(u_2,u_2))*u_2;
+  return [u_1/(DotProduct(u_1,u_1)^0.5,u_2/(DotProduct(u_2,u_2)^0.5,u_3/(DotProduct(u_3,u_3)^0.5];
+end function;
+
+
+Ortho1:=function(a,b,c)
+  v_1:=V![a,b,c,0,0,0];
+  v_2:=V![0,a,0,b,c,0];
+  v_3:=V![0,0,a,0,b,c];
+  return Gram(v_1,v_2,v_3);
+end function;
+
+Ortho2:=function(a,b,c)
+  M:=Matrix(R,6,6,[a,b,c,0,0,0, 0,a,0,b,c,0, 0,0,a,0,b,c, 0,0,0,0,0,0, 0,0,0,0,0,0, 0,0,0,0,0,0]);
+  B:=Basis(NullSpace(M));
+  return Gram(B);
+end function;
+
+OrthoBas:=function(a,b,c)
+  B:=cat(Ortho1(a,b,c),Ortho2(a,b,c));
+end function;
+  
+  
