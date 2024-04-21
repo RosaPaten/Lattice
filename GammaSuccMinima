@@ -9,24 +9,20 @@ end function;
 
 
 Ortho1:=function(a,b,c)
-  v_1:=V![a,b,c,0,0,0];
-  v_2:=V![0,a,0,b,c,0];
-  v_3:=V![0,0,a,0,b,c];
-  return Gram(v_1,v_2,v_3);
+  M:=Matrix(R,3,6,[a,b,c,0,0,0, 0,a,0,b,c,0, 0,0,a,0,b,c]);
+  return Orthogonalize(M);
 end function;
 
 Ortho2:=function(a,b,c)
   U:=sub<V|[a,b,c,0,0,0], [0,a,0,b,c,0], [0,0,a,0,b,c]>;
   W:=OrthogonalComplement(V,U);
   B:=Basis(W);
-  v_1:=B[1];
-  v_2:=B[2];
-  v_3:=B[3];
-  return Gram(v_1,v_2,v_3);
+  M:=Matrix(R,3,6,B);
+  return Orthogonalize(M);
 end function;
 
 OrthoBas:=function(a,b,c)
-  B:=Ortho1(a,b,c) cat Ortho2(a,b,c);
+  B:=[Ortho1(a,b,c)[1],Ortho1(a,b,c)[2],Ortho1(a,b,c)[3],Ortho2(a,b,c)[1],Ortho2(a,b,c)[2],Ortho2(a,b,c)[3]];;
   return B;
 end function;
   
