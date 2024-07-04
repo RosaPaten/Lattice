@@ -1,0 +1,45 @@
+#for the wedge product case, the only lower bound on the volume that I've been able to prove is that (cont.)
+#it contains the ball of radius sqrt{2}/sqrt{n} (I *think* that I can show this is the largest ball it contains)
+#for the 2 fold wedge product of \R^4, this yields a lower bound of 0.646 which is around 1/3 of the estimated actual volume
+#idk if these bounds (on the tensor and wedge cases) are at all interesting- if they are I can send my proof
+
+from scipy.spatial import ConvexHull, convex_hull_plot_2d
+import numpy as np
+import random
+from math import pi, sin, cos
+
+#again, there's probably a way to do this with numpy or another linear algebra library that likely speeds the computation up
+def wedge(u,v):
+  w=[]
+  for i in range(len(u)):
+    for j in range(i+1,len(v)):
+      w.append(u[i]*v[j]-u[j]*v[i])
+  return w
+
+#generates a random pt on the 3-sphere in R^4 (hopefully there aren't typos in the parameterization)
+def genPt():
+  t_1=random.random()*2*pi
+  t_2=random.random()*2*pi
+  t_3=random.random()*2*pi
+  #WARNING: could definitely be a typo in this parameterization
+  p=[cos(t_1),sin(t_1)*cos(t_2),sin(t_1)*sin(t_2)*cos(t_3),sin(t_1)*sin(t_2)*sin(t_3)]
+  return p
+
+#generates n random bivectors in the set {u wedge v | u,v on the unit circle in R^4}
+def gen(n):
+  l=[]
+  for i in range(n):
+    p_1=genPt()
+    p_2=genPt()
+    l.append(wedge(p_1,p_2))
+  return l
+
+#uses gen(n) to get n pts as specified above, takes the convex hull of this set, and then calculates the volume
+#the volume is approximately 2.08 (100,000 points). Little less than a half of 
+def test(n):
+  l=gen(n)
+  hull=ConvexHull(l)
+  v=hull.volume
+  return v
+
+test(1000000)
