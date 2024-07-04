@@ -1,0 +1,39 @@
+#really sorry this is so late! I was gonna upload it like a month ago but then totally forgot
+#for the tensor product case, the only lower bound on the volume that I've been able to prove is that (cont.)
+#it contains the ball of radius 1/sqrt{n} (pretty sure I can also show this is the largest ball it contains)
+#for \R^2\otimes\R^2, this yields a lower bound of \pi^2/8 which is half of the actual volume estimate
+
+from scipy.spatial import ConvexHull, convex_hull_plot_2d
+import numpy as np
+import random
+from math import pi, sin, cos
+
+#I know there's a way to do this in numpy which might slightly speed up the code
+def tensor(u,v):
+  l=[]
+  for i in range(len(u)):
+    for j in range(len(v)):
+      l.append(u[i]*v[j])
+  return l
+
+#generates n pts in the set {u tensor v | u,v on the unit circle in R^2}
+def gen(n):
+  l=[]
+  for i in range(n):
+    t_1=random.random()*2*pi
+    t_2=random.random()*2*pi
+    p_1=[cos(t_1),sin(t_1)]
+    p_2=[cos(t_2),sin(t_2)]
+    p=tensor(p_1,p_2)
+    l.append(p)
+  return l
+
+#uses gen(n) to get n pts as specified above, takes the convex hull of this set, and then calculates the volume
+#the volume is approximately 2.46, and seems to be approaching \pi^2/4 which is half of the volume of the unit 3-sphere
+def test(n):
+  l=gen(n)
+  hull=ConvexHull(l)
+  v=hull.volume
+  return v
+
+test(1000)
