@@ -35,7 +35,7 @@ def gen(n):
   return l
 
 #uses gen(n) to get n pts as specified above, takes the convex hull of this set, and then calculates the volume
-#the volume is approximately 2.08 (100,000 points). Little less than a half of 
+#the volume is approximately 2.08 (100,000 points). Little less than a half of volume of unit 5-sphere
 def test(n):
   l=gen(n)
   hull=ConvexHull(l)
